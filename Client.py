@@ -4,16 +4,9 @@ import tkinter
 HOST = "127.0.0.1"
 PORT = 65432
 
-client = socket.socket(soket.AF_INET, socket.SOCK_STREAM)
-server_address = (HOST, PORT)
-print("Client connecting to server with port: " + str(PORT))
-client.connect(server_address)
+with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+    s.connect((HOST, PORT))
+    s.sendall(b'Hello World!')
+    data = s.recv(1024)
 
-try:
-    while True:
-        msg = input('Client: ')
-        client.sendall(bytes(msg, "utf8"))
-    except KeyboardInterrupt:
-        client.close()
-    finally:
-        client.close()
+print('Received', repr(data))
