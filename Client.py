@@ -1,14 +1,18 @@
 import socket
 import importlib
 
-importlib.import_module("Login")
+ClientSocket = socket.socket()
+host = '127.0.0.1'
+port = 65432
 
-HOST = "127.0.0.1"
-PORT = 65432
+print('Waiting for connection')
+try:
+    ClientSocket.connect((host, port))
+except socket.error as e:
+    print(str(e))
 
-with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-    s.connect((HOST, PORT))
-    s.sendall(b'Hello World!')
-    data = s.recv(1024)
+Response = ClientSocket.recv(1024)
+while True:
+    importlib.import_module("Login")
 
-print('Received', repr(data))
+ClientSocket.close()
