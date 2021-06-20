@@ -1,5 +1,7 @@
 import socket
-import tkinter
+import importlib
+
+importlib.import_module("Login")
 
 HOST = "127.0.0.1"
 PORT = 65432
