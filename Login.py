@@ -1,123 +1,88 @@
 from tkinter import *
-import os
- 
-def register():
-    global register_screen
-    register_screen = Toplevel(main_screen)
-    register_screen.title("Dang ky")
-    register_screen.geometry("300x250")
-    global username
-    global password
-    global username_entry
-    global password_entry
-    username = StringVar()
-    password = StringVar()
-    Label(register_screen, text="Vui long nhap thong tin sau").pack()
-    Label(register_screen, text="").pack()
-    username_lable = Label(register_screen, text="Tai khoan*")
-    username_lable.pack()
-    username_entry = Entry(register_screen, textvariable=username)
-    username_entry.pack()
-    password_lable = Label(register_screen, text="Mat khau*")
-    password_lable.pack()
-    password_entry = Entry(register_screen, textvariable=password, show='*')
-    password_entry.pack()
-    Label(register_screen, text="").pack()
-    Button(register_screen, text="Dang ky", width=10, height=1, command = register_user).pack()
+import tkinter.messagebox
+import mysql.connector
+
+db_conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
+cursordb = db_conn.cursor()
  
 def login():
-    global login_screen
-    login_screen = Toplevel(main_screen)
-    login_screen.title("Dang nhap")
-    login_screen.geometry("300x250")
-    Label(login_screen, text="Vui long nhap thong tin sau de dang nhap").pack()
-    Label(login_screen, text="").pack()
-    global username_verify
-    global password_verify
-    username_verify = StringVar()
-    password_verify = StringVar()
-    global username_login_entry
-    global password_login_entry
-    Label(login_screen, text="Tai khoan* ").pack()
-    username_login_entry = Entry(login_screen, textvariable=username_verify)
-    username_login_entry.pack()
-    Label(login_screen, text="").pack()
-    Label(login_screen, text="Mat khau* ").pack()
-    password_login_entry = Entry(login_screen, textvariable=password_verify, show= '*')
-    password_login_entry.pack()
-    Label(login_screen, text="").pack()
-    Button(login_screen, text="Dang nhap", width=10, height=1, command = login_verify).pack()
+    global root2
+    root2 = Toplevel(root)
+    root2.title("Dang nhap tai khoan")
+    root2.geometry("450x300")
+    root2.config(bg="white")
+    global username_verification
+    global password_verification
+    Label(root2, text='Vui long nhap vao thong tin tai khoan', bd=5,font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue",width=300).pack()
+    username_verification = StringVar()
+    password_verification = StringVar()
+    Label(root2, text="").pack()
+    Label(root2, text="Tai khoan*", fg="black", font=('arial', 12, 'bold')).pack()
+    Entry(root2, textvariable=username_verification).pack()
+    Label(root2, text="").pack()
+    Label(root2, text="Mat khau*", fg="black", font=('arial', 12, 'bold')).pack()
+    Entry(root2, textvariable=password_verification, show="*").pack()
+    Label(root2, text="").pack()
+    Button(root2, text="Dang nhap", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'),command=login_verification).pack()
+    Label(root2, text="")
+
+def logged_destroy():
+    logged_message.destroy()
+    root2.destroy()
  
-def register_user():
-    username_info = username.get()
-    password_info = password.get()
-    file = open(username_info, "w")
-    file.write(username_info + "\n")
-    file.write(password_info)
-    file.close()
-    username_entry.delete(0, END)
-    password_entry.delete(0, END)
-    Label(register_screen, text="Dang ky thanh cong!", fg="green", font=("calibri", 11)).pack()
+def failed_destroy():
+    failed_message.destroy()
+
+def logged():
+    global logged_message
+    logged_message = Toplevel(root2)
+    logged_message.title("Chao mung")
+    logged_message.geometry("500x100")
+    Label(logged_message, text="Dang nhap thanh cong!... Welcome {} ".format(username_verification.get()), fg="green", font="bold").pack()
+    Label(logged_message, text="").pack()
+    Button(logged_message, text="Dang xuat", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=logged_destroy).pack()
  
-def login_verify():
-    username1 = username_verify.get()
-    password1 = password_verify.get()
-    username_login_entry.delete(0, END)
-    password_login_entry.delete(0, END)
-    list_of_files = os.listdir()
-    if username1 in list_of_files:
-        file1 = open(username1, "r")
-        verify = file1.read().splitlines()
-        if password1 in verify:
-            login_sucess()
+def failed():
+    global failed_message
+    failed_message = Toplevel(root2)
+    failed_message.title("Loi")
+    failed_message.geometry("500x100")
+    Label(failed_message, text="Tai khoan hoac mat khau khong dung!", fg="red", font="bold").pack()
+    Label(failed_message, text="").pack()
+    Button(failed_message,text="OK", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=failed_destroy).pack()
+ 
+def login_verification():
+    user_verification = username_verification.get()
+    pass_verification = password_verification.get()
+    sql = "select * from users where name = %s and hash = %s"
+    cursordb.execute(sql,[(user_verification),(pass_verification)])
+    results = cursordb.fetchall()
+    if results:
+        for i in results:
+            logged()
+            break
         else:
-            password_not_recognized()
-    else:
-        user_not_found()
+            failed()
  
-def login_sucess():
-    global login_success_screen
-    login_success_screen = Toplevel(login_screen)
-    login_success_screen.title("Thanh cong")
-    login_success_screen.geometry("150x100")
-    Label(login_success_screen, text="Dang nhap thanh cong!").pack()
-    Button(login_success_screen, text="OK", command=delete_login_success).pack()
+def Exit():
+    wayOut = tkinter.messagebox.askyesno("Dang nhap", "Ban co muon thoat khong?")
+    if wayOut > 0:
+        root.destroy()
+        return
  
-def password_not_recognized():
-    global password_not_recog_screen
-    password_not_recog_screen = Toplevel(login_screen)
-    password_not_recog_screen.title("Loi")
-    password_not_recog_screen.geometry("150x100")
-    Label(password_not_recog_screen, text="Sai mat khau!").pack()
-    Button(password_not_recog_screen, text="OK", command=delete_password_not_recognized).pack()
- 
-def user_not_found():
-    global user_not_found_screen
-    user_not_found_screen = Toplevel(login_screen)
-    user_not_found_screen.title("Loi")
-    user_not_found_screen.geometry("150x100")
-    Label(user_not_found_screen, text="Khong tim thay nguoi dung!").pack()
-    Button(user_not_found_screen, text="OK", command=delete_user_not_found_screen).pack()
+def main_display():
+    global root
+    root = Tk()
+    root.config(bg="white")
+    root.title("Dang nhap")
+    root.geometry("500x500")
+    Label(root,text='Chao mung den voi he thong dang nhap', bd=20, font=('arial', 20, 'bold'), relief="groove", fg="white",
+    bg="blue",width=300).pack()
+    Label(root,text="").pack()
+    Button(root,text='Dang nhap', height="1",width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue",command=login).pack()
+    Label(root,text="").pack()
+    Button(root,text='Thoat', height="1",width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue",command=Exit).pack()
+    Label(root,text="").pack()
 
-def delete_login_success():
-    login_success_screen.destroy()
- 
-def delete_password_not_recognized():
-    password_not_recog_screen.destroy()
- 
-def delete_user_not_found_screen():
-    user_not_found_screen.destroy()
- 
-def main_account_screen():
-    global main_screen
-    main_screen = Tk()
-    main_screen.geometry("300x250")
-    main_screen.title("Dang nhap tai khoan")
-    Label(text="Dang nhap hoac dang ky", width="300", height="2", font=("Calibri", 13)).pack()
-    Label(text="").pack()
-    Button(text="Dang nhap", height="2", width="30", command = login).pack()
-    Label(text="").pack()
-    Button(text="Dang ky", height="2", width="30", command=register).pack()
-    main_screen.mainloop() 
-
-main_account_screen()
+main_display()
+root.mainloop()
