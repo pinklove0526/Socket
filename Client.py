@@ -2,12 +2,12 @@ import socket
 import importlib
 
 ClientSocket = socket.socket()
-host = '127.0.0.1'
-port = 65432
+HOST = '127.0.0.1'
+PORT = input('Nhap port cua server: ')
 
-print('Waiting for connection')
+print('Dang cho ket noi')
 try:
-    ClientSocket.connect((host, port))
+    ClientSocket.connect((HOST, PORT))
 except socket.error as e:
     print(str(e))
 
