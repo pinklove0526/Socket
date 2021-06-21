@@ -3,7 +3,7 @@ import sqlite3
 from sqlite3 import Error
 def create_connection(db_file):
 
-    conn = None
+    conn
     try:
         conn= sqlite3.connect(db_file)
         print(e)
@@ -11,36 +11,40 @@ def create_connection(db_file):
 
 
 
-def select_all_books(conn):
+def select_all_books(conn,database):
+    conn = sqlite3.connect(database)
     cur = conn.cursor()
     cur.execute("SELECT * FROM books")
-
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
-def select_book_by_name(conn, name):
+def select_book_by_name(conn, name, database):
+    conn = sqlite3.connect(database)
     cur = conn.cursor()
     cur.execute("Select *from books where name=?",(name,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
-def select_book_by_type(conn, type):
+def select_book_by_type(conn, type, database):
+    conn = sqlite3.connect(database)
     cur = conn.cursor()
     cur.execute("Select *from books where type=?",(type,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
-def select_book_by_author(conn, author):
+def select_book_by_author(conn, author, database):
+    conn = sqlite3.connect(database)
     cur = conn.cursor()
     cur.execute("Select *from books where author=?",(author,))
     rows = cur.fetchall()
     for row in rows:
         print(row)                
 
-def select_book_by_year(conn, year):
+def select_book_by_year(conn, year, database):
+    conn = sqlite3.connect(database)
     cur = conn.cursor()
     cur.execute("Select *from books where year=?",(year,))
     rows = cur.fetchall()
