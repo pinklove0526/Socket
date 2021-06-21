@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Jun 20, 2021 at 01:53 PM
+-- Generation Time: Jun 21, 2021 at 08:11 AM
 -- Server version: 8.0.21
 -- PHP Version: 7.3.21
 
@@ -36,7 +36,18 @@ CREATE TABLE IF NOT EXISTS `books` (
   `Year` year NOT NULL,
   `NoiDung` longtext COLLATE utf8mb4_vietnamese_ci NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+
+--
+-- Dumping data for table `books`
+--
+
+INSERT INTO `books` (`ID`, `Name`, `Type`, `Author`, `Year`, `NoiDung`) VALUES
+(1, 'Mein kampf', 'Political', 'Fuhrer', 1925, 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut facilis error sapiente nisi id delectus atque eligendi libero, quo at provident voluptatum ipsam esse ratione! Neque in nesciunt vero aut.'),
+(2, 'Metamorphosis', 'Drama', 'Shindo L', 2015, 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut facilis error sapiente nisi id delectus atque eligendi libero, quo at provident voluptatum ipsam esse ratione! Neque in nesciunt vero aut.'),
+(3, 'Theory of everything', 'Science', 'Stephen Hawking', 2002, 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut facilis error sapiente nisi id delectus atque eligendi libero, quo at provident voluptatum ipsam esse ratione! Neque in nesciunt vero aut.'),
+(4, 'Fate Zero', 'Light Novel', 'Gen Urobachi', 2009, 'Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut facilis error sapiente nisi id delectus atque eligendi libero, quo at provident voluptatum ipsam esse ratione! Neque in nesciunt vero aut.'),
+(5, 'Grade 12 Chemistry', 'Education', 'Ministry of Education and Training', 2001, 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tempora et doloremque maxime ipsam culpa natus animi impedit, similique quas! Dolores modi molestias est, nostrum nisi sapiente ut unde accusamus doloribus.');
 
 -- --------------------------------------------------------
 
