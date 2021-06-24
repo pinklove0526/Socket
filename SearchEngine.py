@@ -3,11 +3,11 @@ import sqlite3
 from sqlite3 import Error
 def create_connection(db_file):
 
-    conn
-    try:
-        conn= sqlite3.connect(db_file)
-        print(e)
-    return conn
+    
+    
+        db_file = sqlite3.connect(host="localhost", user="root", passwd="", database="Online_Library")
+        print(conn)
+    
 
 
 
