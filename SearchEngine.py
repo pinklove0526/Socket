@@ -52,8 +52,7 @@ def select_book_by_year(conn, year, database):
         print(row)
 
 def main():
-    #database = add later
-
+    database = sqlite3.connect(host="localhost", user="root", passwd="", database="Online_Library")
     conn = create_connection(database)
     with conn:
         print("Book by name:")
