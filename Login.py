@@ -26,6 +26,24 @@ def login():
     Button(root2, text="Dang nhap", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'),command=login_verification).pack()
     Label(root2, text="")
 
+def register_screen():
+    global reg_message
+    reg_message = Toplevel(root)
+    reg_message.title("Dang ky")
+    reg_message.geometry("450x300")
+    reg_message.config(bg="white")
+    global uname
+    global pw
+    uname = StringVar()
+    pw = StringVar()
+    Label(reg_message, text="Nhap thong tin duoi day de dang ky", bd=5, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue", width=300).pack()
+    Label(reg_message, text="").pack()
+    Label(reg_message, text="Tai khoan", fg="black", font=('arial', 12, 'bold')).pack()
+    Entry(reg_message, textvariable=uname).pack()
+    Label(reg_message, text="Mat khau", fg="black", font=('arial', 12, 'bold')).pack()
+    Entry(reg_message, textvariable=pw, show="*").pack()
+    Button(reg_message, text="Dang ky", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=register).pack()
+
 def logged_destroy():
     logged_message.destroy()
     root2.destroy()
@@ -55,8 +73,21 @@ def login_verification():
     user_verification = username_verification.get()
     pass_verification = password_verification.get()
     sql = "select * from users where name = %s and hash = %s"
-    cursordb.execute(sql,[(user_verification),(pass_verification)])
+    cursordb.executemany(sql,[(user_verification),(pass_verification)])
     results = cursordb.fetchall()
+    if results:
+        for i in results:
+            logged()
+            break
+        else:
+            failed()
+
+def register():
+    user_name = uname.get()
+    pass_word = pw.get()
+    sql = "insert into users (name, hash) values (%s, %s)"
+    cursordb.executemany(sql, [(user_name, pass_word)])
+    results = cursordb.fetchone()
     if results:
         for i in results:
             logged()
@@ -81,6 +112,8 @@ def main_display():
     Label(root,text="").pack()
     Button(root,text='Dang nhap', height="1",width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue",command=login).pack()
     Label(root,text="").pack()
+    Button(root, text='Dang ky', height="1", width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue", command=register_screen).pack()
+    Label(root, text="").pack()
     Button(root,text='Thoat', height="1",width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue",command=Exit).pack()
     Label(root,text="").pack()
 
