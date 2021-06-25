@@ -1,18 +1,12 @@
-import tkinter
-import sqlite3
-from sqlite3 import Error
+from tkinter import *
+import mysql.connector
+
 def create_connection(db_file):
-
-    
-    
-        db_file = sqlite3.connect(host="localhost", user="root", passwd="", database="Online_Library")
-        print(db_file)
-    
-
-
+    db_file = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
+    print(db_file)
 
 def select_all_books(conn,database):
-    conn = sqlite3.connect(database)
+    conn = mysql.connector.connect(database)
     cur = conn.cursor()
     cur.execute("SELECT * FROM books")
     rows = cur.fetchall()
@@ -20,39 +14,69 @@ def select_all_books(conn,database):
         print(row)
 
 def select_book_by_name(conn, name, database):
-    conn = sqlite3.connect(database)
+    conn = mysql.connector.connect(database)
     cur = conn.cursor()
-    cur.execute("Select *from books where name=?",(name,))
+    cur.execute("select * from books where name=?",(name,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
 def select_book_by_type(conn, type, database):
-    conn = sqlite3.connect(database)
+    conn = mysql.connector.connect(database)
     cur = conn.cursor()
-    cur.execute("Select *from books where type=?",(type,))
+    cur.execute("select * from books where type = ?",(type,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
 def select_book_by_author(conn, author, database):
-    conn = sqlite3.connect(database)
+    conn = mysql.connector.connect(database)
     cur = conn.cursor()
-    cur.execute("Select *from books where author=?",(author,))
+    cur.execute("select * from books where author = ?",(author,))
     rows = cur.fetchall()
     for row in rows:
         print(row)                
 
 def select_book_by_year(conn, year, database):
-    conn = sqlite3.connect(database)
+    conn = mysql.connector.connect(database)
     cur = conn.cursor()
-    cur.execute("Select *from books where year=?",(year,))
+    cur.execute("select * from books where year = ?",(year,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
+def main_screen():
+    global root
+    root = Tk()
+    fram = Frame(root)
+    Label(fram, text='Book to find:').pack(side=LEFT)
+    edit = Entry(fram)
+    edit.pack(side=LEFT, fill=BOTH, expand=1)
+    edit.focus_set()
+    butt = Button(fram, text="Search")
+    butt.pack(side=RIGHT)
+    fram.pack(side=TOP)
+    text = Text(root)
+    text.insert('1.0', '''Type your text here''')
+    text.pack(side=BOTTOM)
+
+def find():
+    text.tag_remove('Found', '1.0', END)
+    s = edit.get()
+    if s:
+        idx = 1.0
+        while 1:
+            idx = text.search(s, idx, nocase=1, stopindex=END)
+            if not idx: break
+            lastidx = '%s+%dc' % (idx, len(s))
+            text.tag_add('found', idx, lastidx)
+            idx = lastidx
+            text.tag_config('found', foreground='red')
+            edit.focus_set()
+            butt.config(command=find)
+
 def main():
-    database = sqlite3.connect(host="localhost", user="root", passwd="", database="Online_Library")
+    database = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     conn = create_connection(database)
     with conn:
         print("Book by name:")
@@ -63,6 +87,7 @@ def main():
         select_book_by_author(conn, x)
         print("Book by year:")
         select_book_by_year(conn, x)
-
         print(" All books")
         select_all_books(conn)
+
+main_screen.mainloop()
