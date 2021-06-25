@@ -7,7 +7,7 @@ PORT = input('Nhap port cua server: ')
 
 print('Dang cho ket noi')
 try:
-    ClientSocket.connect((HOST, PORT))
+    ClientSocket.connect((HOST, int(PORT)))
 except socket.error as e:
     print(str(e))
 
