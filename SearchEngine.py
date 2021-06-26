@@ -18,32 +18,32 @@ def select_all_books():
     for row in rows:
         print(row)
 
-def select_book_by_name(conn, name, database):
-    conn = mysql.connector.connect(database)
+def select_book_by_name():
+    conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
-    cur.execute("select * from books where name=?",(name,))
+    cur.execute("select * from books where name like %%")
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
-def select_book_by_type(conn, type, database):
-    conn = mysql.connector.connect(database)
+def select_book_by_type():
+    conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
-    cur.execute("select * from books where type = ?",(type,))
+    cur.execute("select * from books where type = ?")
     rows = cur.fetchall()
     for row in rows:
         print(row)
 
-def select_book_by_author(conn, author, database):
-    conn = mysql.connector.connect(database)
+def select_book_by_author():
+    conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
     cur.execute("select * from books where author = ?",(author,))
     rows = cur.fetchall()
     for row in rows:
         print(row)                
 
-def select_book_by_year(conn, year, database):
-    conn = mysql.connector.connect(database)
+def select_book_by_year():
+    conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
     cur.execute("select * from books where year = ?",(year,))
     rows = cur.fetchall()
@@ -55,34 +55,29 @@ def main_screen():
     root = Tk()
     fram = Frame(root)
     Label(fram, text='Book to find:').pack(side=LEFT)
-    edit = Entry(fram)
+    global inp
+    inp = StringVar()
+    edit = Entry(fram, textvariable=inp)
     edit.pack(side=LEFT, fill=BOTH, expand=1)
     edit.focus_set()
-    butt = Button(fram, text="Search")
+    butt = Button(fram, text="Search", command=find)
     butt.pack(side=RIGHT)
     fram.pack(side=TOP)
+    global OPTIONS
     OPTIONS = ["Name", "Type", "Author", "Year", "All books"]
     global v
     v = StringVar(root)
-    v.set(OPTIONS[0])
+    global w
     w = OptionMenu(root, v, *OPTIONS)
     w.pack()
     select_all_books()
 
 def find():
-    text.tag_remove('Found', '1.0', END)
-    s = edit.get()
-    if s:
-        idx = 1.0
-        while 1:
-            idx = text.search(s, idx, nocase=1, stopindex=END)
-            if not idx: break
-            lastidx = '%s+%dc' % (idx, len(s))
-            text.tag_add('found', idx, lastidx)
-            idx = lastidx
-            text.tag_config('found', foreground='red')
-            edit.focus_set()
-            butt.config(command=find)
+    inp2 = inp.get()
+    v2 = v.get()
+    if v2 == "Name": select_book_by_name()
+    elif v2 == "Type": select_book_by_type()
+
 
 main()
 root.mainloop()
