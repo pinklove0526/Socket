@@ -13,6 +13,6 @@ except socket.error as e:
 
 Response = ClientSocket.recv(1024)
 while True:
-    importlib.import_module("Login")
+    importlib.import_module("Main")
 
 ClientSocket.close()
