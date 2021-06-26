@@ -5,8 +5,13 @@ def create_connection(db_file):
     db_file = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     print(db_file)
 
-def select_all_books(conn,database):
-    conn = mysql.connector.connect(database)
+def main():
+    database = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
+    conn = create_connection(database)
+    main_screen()
+
+def select_all_books():
+    conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
     cur.execute("SELECT * FROM books")
     rows = cur.fetchall()
@@ -62,10 +67,7 @@ def main_screen():
     v.set(OPTIONS[0])
     w = OptionMenu(root, v, *OPTIONS)
     w.pack()
-    database = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
-    conn = create_connection(database)
-    print(" All books")
-    select_all_books(conn, database)
+    select_all_books()
 
 def find():
     text.tag_remove('Found', '1.0', END)
@@ -82,20 +84,5 @@ def find():
             edit.focus_set()
             butt.config(command=find)
 
-def main():
-    database = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
-    conn = create_connection(database)
-    with conn:
-        print("Book by name:")
-        select_book_by_name(conn, x)
-        print("Book by type:")
-        select_book_by_type(conn, x)
-        print("Book by author:")
-        select_book_by_author(conn, x)
-        print("Book by year:")
-        select_book_by_year(conn, x)
-        print(" All books")
-        select_all_books(conn)
-
-main_screen()
+main()
 root.mainloop()
