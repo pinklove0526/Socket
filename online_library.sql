@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.0.2
+-- version 5.1.1
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1:3306
--- Generation Time: Jun 24, 2021 at 01:37 PM
--- Server version: 8.0.21
--- PHP Version: 7.3.21
+-- Host: 127.0.0.1
+-- Generation Time: Jun 26, 2021 at 01:47 PM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,16 +27,14 @@ SET time_zone = "+00:00";
 -- Table structure for table `books`
 --
 
-DROP TABLE IF EXISTS `books`;
-CREATE TABLE IF NOT EXISTS `books` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `Name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `Type` text CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `Author` text CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `Year` year NOT NULL,
-  `NoiDung` longtext COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+CREATE TABLE `books` (
+  `ID` int(11) NOT NULL,
+  `Name` text NOT NULL,
+  `Type` text NOT NULL,
+  `Author` text NOT NULL,
+  `Year` year(4) NOT NULL,
+  `NoiDung` longtext NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `books`
@@ -55,21 +53,52 @@ INSERT INTO `books` (`ID`, `Name`, `Type`, `Author`, `Year`, `NoiDung`) VALUES
 -- Table structure for table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `name` text CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `hash` text CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  `Avatar` text CHARACTER SET utf8mb4 COLLATE utf8mb4_vietnamese_ci NOT NULL,
-  PRIMARY KEY (`ID`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_vietnamese_ci;
+CREATE TABLE `users` (
+  `ID` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `hash` text NOT NULL,
+  `avatar` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`ID`, `name`, `hash`, `Avatar`) VALUES
-(1, 'dnn', 'diend', '');
+INSERT INTO `users` (`ID`, `name`, `hash`, `avatar`) VALUES
+(2, 'dangnhat', '123456', ''),
+(3, 'spencer', 'adcdef', '');
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `books`
+--
+ALTER TABLE `books`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Indexes for table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `books`
+--
+ALTER TABLE `books`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `users`
+--
+ALTER TABLE `users`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

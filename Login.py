@@ -1,9 +1,12 @@
 from tkinter import *
 import tkinter.messagebox
 import mysql.connector
-
-db_conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
-cursordb = db_conn.cursor()
+import importlib
+ 
+#connecting to the database
+connectiondb = mysql.connector.connect(host="localhost",user="root",passwd="",database="Online_Library")
+cursordb = connectiondb.cursor()
+ 
  
 def login():
     global root2
@@ -44,6 +47,7 @@ def register_screen():
     Entry(reg_message, textvariable=pw, show="*").pack()
     Button(reg_message, text="Dang ky", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=register).pack()
 
+ 
 def logged_destroy():
     logged_message.destroy()
     root2.destroy()
@@ -59,6 +63,7 @@ def logged():
     Label(logged_message, text="Dang nhap thanh cong!... Welcome {} ".format(username_verification.get()), fg="green", font="bold").pack()
     Label(logged_message, text="").pack()
     Button(logged_message, text="Dang xuat", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=logged_destroy).pack()
+    importlib.import_module("SearchEngine")
  
 def failed():
     global failed_message
@@ -69,46 +74,40 @@ def failed():
     Label(failed_message, text="").pack()
     Button(failed_message,text="OK", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=failed_destroy).pack()
  
+ 
 def login_verification():
     user_verification = username_verification.get()
     pass_verification = password_verification.get()
     sql = "select * from users where name = %s and hash = %s"
-    cursordb.executemany(sql,[(user_verification),(pass_verification)])
+    cursordb.execute(sql,[(user_verification),(pass_verification)])
     results = cursordb.fetchall()
     if results:
         for i in results:
             logged()
             break
-        else:
-            failed()
-
-def register():
-    user_name = uname.get()
-    pass_word = pw.get()
-    sql = "insert into users (name, hash) values (%s, %s)"
-    cursordb.executemany(sql, [(user_name, pass_word)])
-    results = cursordb.fetchone()
-    if results:
-        for i in results:
-            logged()
-            break
-        else:
-            failed()
+    else:
+        failed()
  
 def Exit():
     wayOut = tkinter.messagebox.askyesno("Dang nhap", "Ban co muon thoat khong?")
     if wayOut > 0:
         root.destroy()
         return
+
+def register():
+    user_name = uname.get()
+    pass_word = pw.get()
+    sql = "insert into users (name, hash) values (%s, %s)"
+    cursordb.executemany(sql, [(user_name, pass_word)])
+    results = cursordb.fetchall()
  
 def main_display():
     global root
     root = Tk()
     root.config(bg="white")
-    root.title("Dang nhap")
+    root.title("Online Library")
     root.geometry("500x500")
-    Label(root,text='Chao mung den voi he thong dang nhap', bd=20, font=('arial', 20, 'bold'), relief="groove", fg="white",
-    bg="blue",width=300).pack()
+    Label(root,text='Online Library', bd=20, font=('arial', 20, 'bold'), relief="groove", fg="white", bg="blue",width=300).pack()
     Label(root,text="").pack()
     Button(root,text='Dang nhap', height="1",width="20", bd=8, font=('arial', 12, 'bold'), relief="groove", fg="white", bg="blue",command=login).pack()
     Label(root,text="").pack()
