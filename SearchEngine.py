@@ -56,8 +56,13 @@ def main_screen():
     butt = Button(fram, text="Search")
     butt.pack(side=RIGHT)
     fram.pack(side=TOP)
+    OPTIONS = ["Name", "Type", "Author", "Year", "All books"]
+    global v
+    v = StringVar(root)
+    v.set(OPTIONS[0])
+    w = OptionMenu(root, v, *OPTIONS)
+    w.pack()
     text = Text(root)
-    text.insert('1.0', '''Type your text here''')
     text.pack(side=BOTTOM)
 
 def find():
@@ -90,4 +95,5 @@ def main():
         print(" All books")
         select_all_books(conn)
 
-main_screen.mainloop()
+main_screen()
+root.mainloop()
