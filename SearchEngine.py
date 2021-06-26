@@ -62,8 +62,10 @@ def main_screen():
     v.set(OPTIONS[0])
     w = OptionMenu(root, v, *OPTIONS)
     w.pack()
-    text = Text(root)
-    text.pack(side=BOTTOM)
+    database = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
+    conn = create_connection(database)
+    print(" All books")
+    select_all_books(conn, database)
 
 def find():
     text.tag_remove('Found', '1.0', END)
