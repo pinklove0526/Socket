@@ -18,10 +18,10 @@ def select_all_books():
     for row in rows:
         print(row)
 
-def select_book_by_name():
+def select_book_by_name(bookname):
     conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
-    cur.execute("select * from books where name like %%")
+    cur.execute("SELECT * from books where Name = %s",(bookname,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
@@ -29,7 +29,7 @@ def select_book_by_name():
 def select_book_by_type():
     conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
-    cur.execute("select * from books where type = ?")
+    cur.execute("SELECT * from books where type  = ?")
     rows = cur.fetchall()
     for row in rows:
         print(row)
@@ -37,7 +37,7 @@ def select_book_by_type():
 def select_book_by_author():
     conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
-    cur.execute("select * from books where author = ?",(author,))
+    cur.execute("SELECT * from books where author = ?",(author,))
     rows = cur.fetchall()
     for row in rows:
         print(row)                
@@ -45,7 +45,7 @@ def select_book_by_author():
 def select_book_by_year():
     conn = mysql.connector.connect(host="localhost", user="root", passwd="", database="Online_Library")
     cur = conn.cursor()
-    cur.execute("select * from books where year = ?",(year,))
+    cur.execute("SELECT * from books where year = ?",(year,))
     rows = cur.fetchall()
     for row in rows:
         print(row)
@@ -75,8 +75,8 @@ def main_screen():
 def find():
     inp2 = inp.get()
     v2 = v.get()
-    if v2 == "Name": select_book_by_name()
-    elif v2 == "Type": select_book_by_type()
+    if v2 == "Name": select_book_by_name(v2)
+    elif v2 == "Type": select_book_by_type(v2)
 
 
 main()
