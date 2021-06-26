@@ -1,5 +1,4 @@
 from tkinter import *
-import tksheet
 import mysql.connector
 
 def create_connection(db_file):
@@ -65,13 +64,12 @@ def main_screen():
     butt.pack(side=RIGHT)
     fram.pack(side=TOP)
     global OPTIONS
-    OPTIONS = ["Name", "Type", "Author", "Year"]
+    OPTIONS = ["Name", "Type", "Author", "Year", "Show all books"]
     global v
     v = StringVar(root)
     global w
     w = OptionMenu(root, v, *OPTIONS)
     w.pack()
-    select_all_books()
 
 def find():
     inp2 = inp.get()
@@ -80,6 +78,6 @@ def find():
     elif v2 == "Type": select_book_by_type(inp2)
     elif v2 == "Author": select_book_by_author(inp2)
     elif v2 == "Year": select_book_by_year(inp2)
-
+    elif v2 == "Show all books" :select_all_books()
 main()
 root.mainloop()

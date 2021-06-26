@@ -100,7 +100,14 @@ def register():
     sql = "insert into users (name, hash) values (%s, %s)"
     cursordb.executemany(sql, [(user_name, pass_word)])
     results = cursordb.fetchall()
+    global reg_success
+    reg_success = Tk()
+    reg_success.title("Dang ky thanh cong")
+    reg_success.geometry("500x100")
+    Label(reg_success,text="Dang ky thanh cong" ,fg="green", font="bold").pack()
+    Button(reg_success, text="Dang nhap", bg="blue", fg='white', relief="groove", font=('arial', 12, 'bold'), command=login).pack()
  
+    
 def main_display():
     global root
     root = Tk()
